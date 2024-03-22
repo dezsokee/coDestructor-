@@ -1,31 +1,51 @@
 import React from 'react';
-import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions, Platform } from 'react-native';
 
 const QuestCard = (props) => {
 
     const { quest } = props;
 
+    const { width } = useWindowDimensions();
+    
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {width: width * 0.8}]}>
             <Text style={styles.cardtitle}>{quest.title}</Text>
+            <Text style={styles.carddescripton}> {quest.description} </Text>
+            {
+                quest.ingredients.map((ingredient) => {
+                    return (
+                        <Text style={styles.carddescripton}> {ingredient} </Text>
+                    );})
+            }
+
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'lightgray',
+        backgroundColor: 'white',
         padding: 25,
         borderRadius: 12,
+        borderColor: '#7FB069',
+        borderWidth: 2,
         alignItems: 'left',
         marginBottom: 16,
-        backgroundColor: '#90ee90',
-        width: '80%',
+        shadowColor: '#000',
+        shadowOpacity: 0.5, // Set shadow opacity
+        shadowRadius: 5, // Set shadow radius
+        elevation: 10,
     },
     cardtitle: {
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: 'bold',
-        fontFamily: 'monospace',
+        fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
+        textAlign: 'left',
+        marginTop: 5
+    },
+    carddescripton: {
+        fontSize: 16,
+        fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
         textAlign: 'left',
         marginTop: 5
     }

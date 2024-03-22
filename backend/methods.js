@@ -1,60 +1,61 @@
-let models = [];
+const { Client } = require("pg");
+const express = require("express");
+const cors = require("cors");
 
-fetch("new_recipes.json")
-  .then((response) => response.json())
-  .then((data) => {
-    for (let key in data) {
-      models.push(data[key]);
-    }
-    // Ezután meghívjuk a getRecipes függvényt, ha szükséges
-    // const nation = getNation(); // Itt helyezzük el a getNation() hívást
-    // console.log(`Monthly topic: ${nation}`);
-    //document.write(`<img src="./images/${nation}.png" style="width: 200px;">`);
-    //console.log(`<img src="./images/${nation}.png" style="width: 200px;">`);
-    // const [recipe1, recipe2] = useRecipes();
-    // console.log(`Weekly recipe 1:`, recipe1);
-    // console.log(`Weekly recipe 2:`, recipe2);
-    //useRecipes();
+const client = new Client({
+  host: "localhost",
+  user: "postgres",
+  port: 5432,
+  password: "2002boti",
+  database: "EF",
+});
+
+const app = express();
+app.use(cors());
+
+client
+  .connect()
+  .then(() => {
+    console.log("Kapcsolódva a PostgreSQL adatbázishoz");
   })
   .catch((error) => {
-    console.error("Hiba történt: ", error);
+    console.error(
+      "Hiba a PostgreSQL adatbázishoz való kapcsolódás során:",
+      error
+    );
   });
 
-const countries = ["italy", "french", "greek", "mexican", "USA", "hungarian"];
-function getNation() {
-  const nation = countries[Math.floor(Math.random() * countries.length)];
-  return nation;
-}
+app.get("/recipe", async (req, res) => {
+  try {
+    const nationQuery = await client.query(`SELECT nation FROM "nation";`);
+    const p_nation = nationQuery.rows;
 
-function getRecipes() {
-  const nation = getNation();
-  const recipes = models.filter((model) => model.country === nation);
+    let randomNation = p_nation[Math.floor(Math.random() % p_nation.length)];
+    let nationS = randomNation.nation;
 
-  // Válaszd ki a 2 véletlenszerű receptet
-  const recipe1 = recipes[Math.floor(Math.random() * recipes.length)];
-  let recipe2 = recipes[Math.floor(Math.random() * recipes.length)];
+    const recipesQuery = await client.query(
+      `SELECT * FROM "recipes" WHERE "country" = '${randomNation.nation}';`
+    );
+    const recipes_array = recipesQuery.rows;
 
-  while (recipe1 === recipe2) {
-    recipe2 = recipes[Math.floor(Math.random() * recipes.length)];
+    const recipe1 =
+      recipes_array[Math.floor(Math.random() * recipes_array.length)];
+    let recipe2 =
+      recipes_array[Math.floor(Math.random() * recipes_array.length)];
+    while (recipe1 === recipe2) {
+      recipe2 = recipes_array[Math.floor(Math.random() * recipes_array.length)];
+    }
+
+    console.log(recipe1);
+    console.log(recipe2);
+
+    res.json({ recipe1, recipe2 });
+  } catch (error) {
+    console.error("Hiba a lekérdezés során:", error);
+    res.status(500).json({ error: error.message });
   }
+});
 
-  //   const fs = require("fs");
-
-  //   const data = "data aeifh";
-
-  //   // Asynchronously writes data to a file, replacing the file if it already exists.
-  //   fs.writeFile("prev.json", data, (err) => {
-  //     if (err) throw err;
-  //     console.log("The file has been saved!");
-  //   });
-  return [recipe1, recipe2];
-}
-
-function useRecipes() {
-  const [a, b] = getRecipes();
-  return [a, b];
-}
-
-//document.write(`<img src="./images/${countries[5]}.png" style="width: 200px;">`);
-
-//(`<img src="${countries[0]}.png">`);
+app.listen(8081, () => {
+  console.log("A szerver fut a 8081-es porton");
+});

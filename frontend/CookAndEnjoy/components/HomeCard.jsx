@@ -21,12 +21,17 @@ const HomeCard = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'lightgray',
+        backgroundColor: 'white',
         padding: 25,
         borderRadius: 12,
         alignItems: 'left',
         marginBottom: 16,
-        backgroundColor: '#90ee90',
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.4,
+        shadowRadius: 2,
+        elevation: 1,
+        marginBottom: 26,
     },
     text: {
         fontSize: 18,
