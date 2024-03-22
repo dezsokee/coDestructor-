@@ -15,18 +15,27 @@ const Footer = ({ route }) => {
         navigation.navigate('Quest');
     };
 
+    const userPress = () => {
+        navigation.navigate('User');
+    };
+
     return (
-        <View style={styles.container}>
-            <TouchableOpacity>
-                <Icon name="user" size={30} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={homePress}>
-                <Icon name="home" size={30} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={questPress}>
-                <Icon name="check" size={30} color="black" />
-            </TouchableOpacity>
-        </View>
+        <>
+            <View style={styles.line}>
+            </View>
+
+            <View style={styles.container}>
+                <TouchableOpacity onPress={userPress}>
+                    <Icon name="user" size={30} color="#006400" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={homePress}>
+                    <Icon name="home" size={30} color="#006400" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={questPress}>
+                    <Icon name="check" size={30} color="#006400" />
+                </TouchableOpacity>
+            </View>
+        </>
     );
 };
 
@@ -40,7 +49,18 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'space-around',
-    }
+    },
+    line: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 1,
+        width: '80%',
+        alignSelf: 'center',
+    },
 });
 
 
