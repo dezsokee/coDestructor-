@@ -7,6 +7,7 @@ const client = new Client({
   user: "postgres",
   port: 5432,
   password: "geriike",
+  password: "200342",
   database: "EF",
 });
 
@@ -30,8 +31,10 @@ app.get("/recipe", async (req, res) => {
     const nationQuery = await client.query(`SELECT nation FROM "nations";`);
     const p_nation = nationQuery.rows;
 
-    let randomNation = p_nation[Math.floor(Math.random() % p_nation.length)];
-    let nationS = randomNation.nation;
+    
+    let randomNation = p_nation[Math.floor(Math.random() * p_nation.length)];
+
+    console.log(p_nation);
 
     const recipesQuery = await client.query(
       `SELECT * FROM "recipes" WHERE "country" = '${randomNation.nation}';`
@@ -56,6 +59,6 @@ app.get("/recipe", async (req, res) => {
   }
 });
 
-app.listen(8081, () => {
+app.listen(3000, () => {
   console.log("A szerver fut a 8081-es porton");
 });
