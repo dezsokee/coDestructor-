@@ -1,6 +1,7 @@
 const { Client } = require("pg");
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const client = new Client({
   host: "localhost",
@@ -58,10 +59,10 @@ app.get("/ingredients", async (req, res) => {
     const ingredients = await client.query(
       `SELECT ingredient_name FROM "ingredients";`
     );
-    console.log(ingredients.rows);
+    // console.log(ingredients.rows);
 
     res.json(ingredients.rows);
-  } catch (error) {}
+  } catch (error) { }
 });
 
 app.get("/recipeByIngredients/:ingredient", async (req, res) => {
@@ -108,12 +109,16 @@ app.get("/recipeByIngredients/:ingredient", async (req, res) => {
 
 });
 
+app.use(express.json())
+app.use(bodyParser.json());
+
 app.post('/createIngredients', (req, res) => {
-  const { data } = req.body;
+  const  data  = req.body;
+
+  console.log(req.body);
+  
   console.log('Received data from React Native:', data);
   // Process the data as needed
-  console.log(data);
-  res.sendStatus(200);
 });
 
 app.listen(3000, () => {

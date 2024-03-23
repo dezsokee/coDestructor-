@@ -23,7 +23,7 @@ const User = () => {
         {
             ingredient_name: "Select one!"
         }
-            
+
     );
 
     const handleValueChange1 = (itemValue) => {
@@ -68,17 +68,27 @@ const User = () => {
 
     const sendDataToServer = async () => {
         try {
-          const response = await fetch('http://192.168.117.213:3000/createingredients', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ data: ingredients}),
-          });
+            const response = await fetch('http://192.168.117.213:3000/createIngredients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "selectedIngredientPass1": selectedValue1,
+                    "selectedIngredientPass2": selectedValue2,
+                    "selectedIngredientPass3": selectedValue3,
+                    "selectedIngredientPass4": selectedValue4,
+                    "selectedIngredientPass5": selectedValue5
+                }),
+            });
+
+            const responseJson = await response.json();
+            console.log(responseJson);
+
         } catch (error) {
-          console.error('Error:', error);
+            console.error('Error:', error);
         }
-      };
+    };
 
     return (
         <>
