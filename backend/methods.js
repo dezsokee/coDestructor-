@@ -5,7 +5,10 @@ const cors = require("cors");
 const client = new Client({
   host: "localhost",
   user: "postgres",
+<<<<<<< HEAD
   password: "geriike",
+=======
+>>>>>>> a18683ad09ae389734e0499e72416d79dac1849d
   port: 5432,
   database: "EF",
 });
