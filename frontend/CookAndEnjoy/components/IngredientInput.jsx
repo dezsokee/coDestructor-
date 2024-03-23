@@ -1,20 +1,24 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { useState } from 'react';
 
 const IngredientInput = (props) => {
+    
+    const [selectedValue2, setSelectedValue] = useState('');
+
+    const listIngredients = props.inputIngredients;
+
+    const handleValueChange = (itemValue, index) => {
+        setSelectedValue(itemValue);
+        console.log(itemValue, index);
+        props.onValueChange(itemValue, index); // Call the function passed via props
+    };
+
     return (
         <View style={styles.flexDoboz}>
-            <Text style={styles.label}>Ingredient {props.value}:</Text>
-            <Picker style={styles.picker}
-                selectedValue={''} // Set the selected value here
-                onValueChange={(itemValue, itemIndex) => {
-                    // Handle selection change here
-                }}>
-                <Picker.Item label="Option 1" value="option1" />
-                <Picker.Item label="Option 2" value="option2" />
-                <Picker.Item label="Option 3" value="option3" />
-            </Picker>
+            
+            
 
         </View>
     );

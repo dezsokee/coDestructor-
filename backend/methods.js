@@ -1,6 +1,7 @@
 const { Client } = require("pg");
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const client = new Client({
   host: "localhost",
@@ -8,6 +9,7 @@ const client = new Client({
   port: 5432,
   password: "2002boti",
   database: "EF",
+  password: "200342",
 });
 
 const app = express();
@@ -45,9 +47,6 @@ app.get("/recipe", async (req, res) => {
       recipe2 = recipes_array[Math.floor(Math.random() * recipes_array.length)];
     }
 
-    // console.log(recipe1);
-    // console.log(recipe2);
-
     res.json({ recipe1, recipe2 });
   } catch (error) {
     console.error("Hiba a lekérdezés során:", error);
@@ -60,10 +59,10 @@ app.get("/ingredients", async (req, res) => {
     const ingredients = await client.query(
       `SELECT ingredient_name FROM "ingredients";`
     );
-    console.log(ingredients.rows);
+    // console.log(ingredients.rows);
 
     res.json(ingredients.rows);
-  } catch (error) {}
+  } catch (error) { }
 });
 
 
@@ -96,14 +95,18 @@ app.get("/recipeByIngredients/:ingredient", async (req, res) => {
   }
 });
 
-app.post("/createIngredients", (req, res) => {
-  const { data } = req.body;
-  console.log("Received data from React Native:", data);
-  // Process the data as needed
-  console.log(data);
-  res.sendStatus(200);
+app.use(express.json())
+app.use(bodyParser.json());
+
+app.post('/createIngredients', (req, res) => {
+  const  data  = req.body;
+
+  console.log(req.body);
+  
+  console.log('Received data from React Native:', data);
+
 });
 
-app.listen(8081, () => {
+app.listen(3000, () => {
   console.log("A szerver fut a 8081-es porton");
 });
