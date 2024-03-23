@@ -5,10 +5,6 @@ const cors = require("cors");
 const client = new Client({
   host: "localhost",
   user: "postgres",
-<<<<<<< HEAD
-  password: "geriike",
-=======
->>>>>>> a18683ad09ae389734e0499e72416d79dac1849d
   port: 5432,
   password: "2002boti",
   database: "EF",
@@ -70,35 +66,7 @@ app.get("/ingredients", async (req, res) => {
   } catch (error) {}
 });
 
-<<<<<<< HEAD
-app.get("/recipeByIngredients/:ingredients{[]}", async (req, res) => {
-  //const p_array = ["milk", "egg", "flour", "beef", "chicken"];
 
-  const p_array = req.params;
-  console.log(p_array);
-
-  let p_array_random = [];
-  p_array_random.push(p_array[Math.floor(Math.random() * p_array.length)]);
-  for (let i = 1; i < 3; i++) {
-    p_array_random.push(p_array[Math.floor(Math.random() * p_array.length)]);
-    while (p_array_random[i] === p_array_random[i - 1]) {
-      p_array_random[i] = p_array[Math.floor(Math.random() * p_array.length)];
-    }
-  }
-
-  console.log(p_array_random);
-
-  const recipesQuery = await client.query(
-    `SELECT * FROM "recipes" WHERE ingredients LIKE '%${p_array_random[0]}%' OR ingredients LIKE
-    '%${p_array_random[1]}%' OR ingredients LIKE '%${p_array_random[2]}%' FETCH FIRST 2 ROWS ONLY;`
-  );
-
-  console.log(recipesQuery.rows);
-
-  res.json(recipesQuery.rows);
-
-  
-=======
 app.get("/recipeByIngredients/:ingredient", async (req, res) => {
   const { ingredient } = req.params;
 
@@ -149,7 +117,6 @@ app.post('/createIngredients', (req, res) => {
   // Process the data as needed
   console.log(data);
   res.sendStatus(200);
->>>>>>> 4fe864a794c998854f5581c9bf1025652dc08a01
 });
 
 app.listen(8081, () => {
