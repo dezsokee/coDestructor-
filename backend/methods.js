@@ -6,7 +6,7 @@ const client = new Client({
   host: "localhost",
   user: "postgres",
   port: 5432,
-  password: "2002boti",
+  password: "200342",
   database: "EF",
 });
 
@@ -58,6 +58,6 @@ app.get("/recipe", async (req, res) => {
   }
 });
 
-app.listen(8081, () => {
+app.listen(3000, () => {
   console.log("A szerver fut a 8081-es porton");
 });

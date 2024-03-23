@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, Touchable, TouchableOpacity, ScrollView } from 'react-native';
 import Footer from './Footer';
 import QuestCard from './QuestCard';
 import { useState } from 'react';
@@ -8,10 +8,31 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const QuestScreen = () => {
 
-    const [quest1, setQuest1] = useState({ title: "Quest 1", description: "This is the first quest", ingredients: ["ingredient1", "ingredient2", "ingredient3"] });
-    const [quest2, setQuest2] = useState({ title: "Quest 2", description: "This is the first quest", ingredients: ["ingredient1", "ingredient2", "ingredient3"] });
+    const [quest1, setQuest1] = useState({});
+    const [quest2, setQuest2] = useState({});
 
     const navigation = useNavigation();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://192.168.117.213:3000/recipe');
+
+                const json = await response.json();
+
+                setQuest1(json.recipe1);
+                setQuest2(json.recipe2);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    console.log(quest1);
+    console.log(quest2);
 
     const quest1Handle = () => {
         navigation.navigate('BigQuest');
@@ -23,31 +44,33 @@ const QuestScreen = () => {
 
     return (
         <>
-            <View style={styles.container}>
-                <Text style={styles.title}>Quest Screen</Text>
-                <Text style={styles.subtitle}>Cook And</Text>
+            <ScrollView>
+                <View style={styles.container}>
+                    <Text style={styles.title}>Quest Screen</Text>
+                    <Text style={styles.subtitle}>Cook And</Text>
 
-                <View style={styles.flexdoboz}>
-                    <Text style={styles.subtitle2}>Enjoy!</Text>
+                    <View style={styles.flexdoboz}>
+                        <Text style={styles.subtitle2}>Enjoy!</Text>
 
-                </View>
+                    </View>
 
-                <View style={styles.card}>
-                    <TouchableOpacity onPress={quest1Handle}>
-                        <QuestCard quest={quest1}>
+                    <View style={styles.card}>
+                        <TouchableOpacity onPress={quest1Handle}>
+                            <QuestCard quest={quest1}>
 
-                        </QuestCard>
-                    </TouchableOpacity>
-                </View>
-                
-                <View style={styles.card}>
-                    <TouchableOpacity onPress={quest2Handle}>
-                        <QuestCard quest={quest2}>
                             </QuestCard>
-                    </TouchableOpacity>
-                </View>
-                
-            </View >
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.card}>
+                        <TouchableOpacity onPress={quest2Handle}>
+                            <QuestCard quest={quest2}>
+                            </QuestCard>
+                        </TouchableOpacity>
+                    </View>
+
+                </View >
+            </ScrollView>
 
             <Footer>
             </Footer>
