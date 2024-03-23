@@ -7,7 +7,6 @@ const client = new Client({
   host: "localhost",
   user: "postgres",
   port: 5432,
-  password: "2002boti",
   database: "EF",
 });
 
@@ -28,7 +27,7 @@ client
 
 app.get("/recipe", async (req, res) => {
   try {
-    const nationQuery = await client.query(`SELECT nation FROM "nations";`);
+    const nationQuery = await client.query(`SELECT nation FROM "nation";`);
     const p_nation = nationQuery.rows;
 
     let randomNation = p_nation[Math.floor(Math.random() * p_nation.length)];
