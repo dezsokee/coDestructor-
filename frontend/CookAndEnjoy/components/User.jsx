@@ -3,15 +3,13 @@ import { View, Text, StyleSheet, TextInput, useWindowDimensions } from 'react-na
 import Footer from './Footer';
 import { useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import IngredientInput from './IngredientInput';
 
 const User = () => {
 
-    const [input1, setInput1] = useState('');
-    const [input2, setInput2] = useState('');
-    const [input3, setInput3] = useState('');
-    const [input4, setInput4] = useState('');
-    const [input5, setInput5] = useState('');
-    
+    [counter, setCounter] = useState(1);
+    [inputCounter, setInputCounter] = useState(1);
+
     const { width } = useWindowDimensions();
 
     const submit = () => {
@@ -20,6 +18,20 @@ const User = () => {
         console.log(input3);
         console.log(input4);
         console.log(input5);
+    }
+
+    const handlePlusPress = () => {
+        setInputCounter(prevCounter => prevCounter + 1);
+    }
+
+    const renderIngredientInputs = () => {
+        let inputs = [];
+        for (let i = 2; i <= inputCounter; i++) {
+            inputs.push(
+                <IngredientInput key={i} label={`Ingredient ${i}`} value={i} />
+            );
+        }
+        return inputs;
     }
 
     return (
@@ -39,48 +51,15 @@ const User = () => {
                     </Text>
                 </View>
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Label 1:</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={setInput1}
-                        placeholder="Input 1"
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Label 2:</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={setInput2}
-                        placeholder="Input 2"
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Label 3:</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={setInput3}
-                        placeholder="Input 3"
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Label 4:</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={setInput4}
-                        placeholder="Input 4"
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Label 5:</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={setInput5}
-                        placeholder="Input 5"
-                    />
-                </View>
+                <IngredientInput label="Ingredient 1" value={counter++} />
+                
+                {renderIngredientInputs()}
 
-                <TouchableOpacity style={[styles.button, {width: width * 0.6}]} onPress={submit}>
+                <TouchableOpacity style={styles.plusbutton} onPress={handlePlusPress}>
+                    <Text style={styles.plus}>+</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.button, { width: width * 0.6 }]} onPress={submit}>
                     <Text style={styles.buttontext}>Submit</Text>
                 </TouchableOpacity>
 
@@ -158,6 +137,20 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: '#006400',
         textAlign: 'center',
+    },
+    plusbutton: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#006400',
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 3,
+        shadowColor: '#000',
+    },
+    plus: {
+        fontSize: 20,
+        color: 'white',
     }
 });
 
