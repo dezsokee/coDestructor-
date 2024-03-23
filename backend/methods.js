@@ -6,6 +6,7 @@ const client = new Client({
   host: "localhost",
   user: "postgres",
   port: 5432,
+  password: "geriike",
   password: "200342",
   database: "EF",
 });
@@ -27,7 +28,7 @@ client
 
 app.get("/recipe", async (req, res) => {
   try {
-    const nationQuery = await client.query(`SELECT nation FROM "nation";`);
+    const nationQuery = await client.query(`SELECT nation FROM "nations";`);
     const p_nation = nationQuery.rows;
 
     
