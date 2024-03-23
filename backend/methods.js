@@ -6,8 +6,7 @@ const client = new Client({
   host: "localhost",
   user: "postgres",
   port: 5432,
-  password: "geriike",
-  password: "200342",
+  password: "2002boti",
   database: "EF",
 });
 
@@ -28,13 +27,10 @@ client
 
 app.get("/recipe", async (req, res) => {
   try {
-    const nationQuery = await client.query(`SELECT nation FROM "nations";`);
+    const nationQuery = await client.query(`SELECT nation FROM "nation";`);
     const p_nation = nationQuery.rows;
 
-    
     let randomNation = p_nation[Math.floor(Math.random() * p_nation.length)];
-
-    console.log(p_nation);
 
     const recipesQuery = await client.query(
       `SELECT * FROM "recipes" WHERE "country" = '${randomNation.nation}';`
@@ -49,8 +45,8 @@ app.get("/recipe", async (req, res) => {
       recipe2 = recipes_array[Math.floor(Math.random() * recipes_array.length)];
     }
 
-    console.log(recipe1);
-    console.log(recipe2);
+    // console.log(recipe1);
+    // console.log(recipe2);
 
     res.json({ recipe1, recipe2 });
   } catch (error) {
@@ -59,6 +55,23 @@ app.get("/recipe", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.get("/ingredients", async (req, res) => {
+  try {
+    const ingredients = await client.query(
+      `SELECT ingredient_name FROM "ingredients";`
+    );
+    console.log(ingredients.rows);
+
+    res.json(ingredients.rows);
+  } catch (error) {}
+});
+
+app.get("recipeByIngredients/:ingredientsArray", async (req, res) => {
+  const ingredientsArray = req.params;
+  const ingredients = ingredientsArray.split(",");
+  console.log(ingredients);
+});
+
+app.listen(8081, () => {
   console.log("A szerver fut a 8081-es porton");
 });
