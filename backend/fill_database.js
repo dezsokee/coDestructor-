@@ -5,17 +5,7 @@ const client = new Client({
   host: "localhost",
   user: "postgres",
   port: 5432,
-<<<<<<< HEAD
-<<<<<<< HEAD
   password: "geriike",
-=======
-  password: "200342",
->>>>>>> 71ba4994d3d798514224f71320395d6af75fb2f7
-=======
-  password: "geriike",
-
-  password: "200342",
->>>>>>> e9f7e40904a7ce3dbf42b1a2faa28cf6a74f6c0d
   database: "EF",
 });
 
@@ -60,12 +50,16 @@ fs.readFile("new_recipes.json", "utf8", (err, data) => {
           const country = recipe.country;
 
           // Beszúrás a PostgreSQL adatbázisba
-          const insertPromise = client.query('INSERT INTO recipes (name, description, ingredients, method, country) VALUES ($1, $2, $3, $4, $5)', [name, description, ingredients, method, country])
+          const insertPromise = client
+            .query(
+              "INSERT INTO recipes (name, description, ingredients, method, country) VALUES ($1, $2, $3, $4, $5)",
+              [name, description, ingredients, method, country]
+            )
             .then(() => {
-              console.log('Recept sikeresen beszúrva');
+              console.log("Recept sikeresen beszúrva");
             })
-            .catch(error => {
-              console.error('Hiba a recept beszúrása során:', error);
+            .catch((error) => {
+              console.error("Hiba a recept beszúrása során:", error);
             });
 
           insertPromises.push(insertPromise);
