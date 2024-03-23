@@ -4,16 +4,19 @@ import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 const HomeCard = (props) => {
     const { width } = useWindowDimensions();
 
+    const quest1 = props.quests[0];
+    const quest2 = props.quests[1];
+
     return (
         <View style={[styles.container, { width: width * 0.8 }]}>
             <Text style={styles.text}>
-                {props.title}
+                
             </Text>
             <Text style={styles.questText}>
-                Q1: {props.quests[0]}
+                Q1: {quest1.name}
             </Text>
             <Text style={styles.questText}>
-                Q2: {props.quests[1]}
+                Q2: {quest2.name}
             </Text>
         </View>
     );

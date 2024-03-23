@@ -16,7 +16,6 @@ const App = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          initialParams={{ topic: 'Italian' }}
         />
         <Stack.Screen
           name="Quest"

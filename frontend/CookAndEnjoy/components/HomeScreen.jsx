@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Image } from 'react-native';
 import HomeCard from './HomeCard';
 import { useState } from 'react';
 import Footer from './Footer';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
-const HomeScreen = ({ route }) => {
-    const { topic } = route.params;
+const HomeScreen = () => {
 
-    const weeklyQuests = [
-        'Quest 1',
-        'Quest 2'
-    ];
+    const [monthlyQuests, setMonthlyQuests] = useState([]);
+    const [monthlyQuests2, setMonthlyQuests2] = useState([]);
 
-    const [monthlyQuests, setMonthlyQuests] = useState(["quest1", "quest2"]);
-    const [monthlyQuests2, setMonthlyQuests2] = useState(["lastweekquest1", "lastweekquest2"]);
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch('http://192.168.117.213:3000/recipe');
+            
+            const json = await response.json();
 
+            setMonthlyQuests(json.recipe1);
+            setMonthlyQuests2(json.recipe2);
+
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        };
+    
+        fetchData();
+      }, []);
+
+    console.log(monthlyQuests);
+    const topic = monthlyQuests.country;
     const navigation = useNavigation();
 
     const quest1Handle = () => {
@@ -25,6 +40,10 @@ const HomeScreen = ({ route }) => {
     const quest2Handle = () => {
         navigation.navigate('BigQuest2');
     };
+
+    const nation = monthlyQuests.country;
+
+    const myString = "require('../assets/{nation}.png')";
 
     return (
         <>
@@ -37,24 +56,24 @@ const HomeScreen = ({ route }) => {
                 <View style={styles.topic}>
                     <Text style={styles.text}>This Month's Topic:</Text>
                     <View style={styles.rowflex}>
-                        <Image source={require('../assets/french.png')} style={{ width: 40, height: 40 }} />
+                        <Image source={require('../assets/italy.png')} style={{ width: 40, height: 40 }} />
                         <Text style={styles.topictext}>{topic}</Text>
                     </View>
-                    
+
                 </View>
 
                 <View>
                     <TouchableOpacity onPress={quest1Handle}>
-                        <HomeCard quests={monthlyQuests} title="Weekly Quests:">
+                        <HomeCard quests={[monthlyQuests, monthlyQuests2]} title="Weekly Quests:">
 
                         </HomeCard>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={quest2Handle}>
+                    {/* <TouchableOpacity onPress={quest2Handle}>
                         <HomeCard quests={monthlyQuests2} title="Last Week's Quests:">
 
                         </HomeCard>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                 </View>
 
