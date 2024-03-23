@@ -4,46 +4,72 @@ import HomeCard from './HomeCard';
 import { useState } from 'react';
 import Footer from './Footer';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = () => {
 
     const [monthlyQuests, setMonthlyQuests] = useState([]);
     const [monthlyQuests2, setMonthlyQuests2] = useState([]);
+    const [userIngredients, setUserIngredients] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            const response = await fetch('http://192.168.117.213:3000/recipe');
-            
-            const json = await response.json();
+            try {
+                const response = await fetch('http://192.168.117.213:3000/recipe');
 
-            setMonthlyQuests(json.recipe1);
-            setMonthlyQuests2(json.recipe2);
+                const json = await response.json();
 
-          } catch (error) {
-            console.error('Error:', error);
-          }
+                setMonthlyQuests(json.recipe1);
+                setMonthlyQuests2(json.recipe2);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
         };
-    
+
         fetchData();
-      }, []);
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://192.168.117.213:3000/userIngredients');
+
+                const json = await response.json();
+
+                setUserIngredients(json);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const navigation = useNavigation();
 
     const quest1Handle = () => {
-        navigation.navigate('BigQuest');
+        navigation.navigate('Quest');
     };
 
-    const quest2Handle = () => {
-        navigation.navigate('BigQuest2');
+    const userHandle = () => {
+        navigation.navigate('User');
     };
 
     return (
         <>
             <View style={styles.container}>
 
-                <View className="items">
+                <View style={styles.dear}>
+                    <Text style={styles.title}>
+                        Welcome User!
+                    </Text>
+
+                </View>
+                
+
+                <View style={styles.titleview}>
                     <Text style={styles.title}>Cook 'n Enjoy!</Text>
                 </View>
 
@@ -62,18 +88,28 @@ const HomeScreen = () => {
                         </HomeCard>
                     </TouchableOpacity>
 
-                    <TouchableOpacity>
-                        
-                    </TouchableOpacity>
+                    <View>
+                        <TouchableOpacity onPress={userHandle}>
+                            <Text style={styles.text2}>Your Ingredients:</Text>
+                            <Text style={styles.text3}>Don't forget to use them! 🙌</Text>
+                            <View style={styles.line}>
+                            </View>
+                            <Text style={styles.flexIngredient}>
+                                {userIngredients.map((ingredient, index) => (
+                                    <Text key={index} style={styles.ingredient}>
+                                        <Text>  </Text> {ingredient.ingredient}<Text>  </Text>
+                                    </Text>
+                                ))}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
 
                 </View>
 
-                <View>
-                </View>
 
             </View>
-            <Footer>
 
+            <Footer>
             </Footer>
         </>
     );
@@ -82,7 +118,6 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
     },
@@ -92,11 +127,11 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
         textAlign: 'center',
-        marginTop: 16,
-        backgroundColor: 'white'
+        marginTop: 10,
+        backgroundColor: 'white',
     },
     topic: {
-        marginBottom: 16,
+        marginBottom: -46,
         backgroundColor: 'white',
         padding: 16,
         borderRadius: 12,
@@ -108,7 +143,7 @@ const styles = StyleSheet.create({
         elevation: 10,
         width: '110%',
         alignItems: 'center',
-        marginBottom: 26,
+        marginBottom: 76,
     },
     text: {
         fontSize: 22,
@@ -125,6 +160,51 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    text2: {
+        fontSize: 20,
+        marginBottom: 8,
+        fontWeight: 'bold',
+        fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
+        textAlign: 'center',
+    },
+    line: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        shadowColor: '#006400',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 1,
+        elevation: 1,
+        width: '80%',
+        alignSelf: 'center',
+        marginBottom: 16,
+    },
+    flexIngredient: {
+        fontSize: 18,
+        fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
+        textAlign: 'center',
+        marginBottom: 16,
+    },
+    text3: {
+        fontSize: 15,
+        fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
+        textAlign: 'center',
+        marginBottom: 16,
+    },
+    dear: {
+        alignSelf: 'flex-start',
+        marginLeft: 26,
+        flex: 1,
+        paddingTop: 20,
+        paddingLeft: 10,
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'center',
+    },
+    titleview: {
+        flex: 1,
+        marginTop: -20,
     },
 });
 

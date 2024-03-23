@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const Footer = ({ route }) => {
 
@@ -19,6 +20,10 @@ const Footer = ({ route }) => {
         navigation.navigate('User');
     };
 
+    const discountPress = () => {
+        navigation.navigate('Discount');
+    };
+
     return (
         <>
             <View style={styles.line}>
@@ -33,6 +38,9 @@ const Footer = ({ route }) => {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={questPress}>
                     <Icon name="check" size={30} color="#006400" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={discountPress}>
+                    <FontAwesome name="percent" size={25} color="#006400" />
                 </TouchableOpacity>
             </View>
         </>

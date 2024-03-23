@@ -7,8 +7,8 @@ const client = new Client({
   host: "localhost",
   user: "postgres",
   port: 5432,
-  password: "geriike",
-  database: "EF"
+  database: "EF",
+  password: "200342",
 });
 
 const app = express();
@@ -192,7 +192,17 @@ app.post("/createIngredients", (req, res) => {
   ];
 
   client.query(`DELETE FROM user_ingredient;`);
+  const data_ingredients = [
+    ...new Set(
+      Object.values(data).filter((ingredient) => ingredient !== "")
+    ),
+  ];
 
+  console.log(data_ingredients);
+
+  data_ingredients.forEach((element) => {
+    client.query(
+      `INSERT INTO user_ingredient (ingredient) VALUES ('${element}');`
   try {
     data_ingredient.forEach((element) => {
       client.query(
@@ -260,6 +270,15 @@ app.post("/increasePoints", async (req, res) => {
   }
 });
 
-app.listen(8081, () => {
+app.get("/flag", async (req, res) => {
+  const flag = await client.query("SELECT * FROM nations;");
+
+  const p_flag = flag.rows;
+
+  //console.log(<img src="${p_flag[0].flag}" />);
+  res.json(flag.rows);
+});
+
+app.listen(3000, () => {
   console.log("A szerver fut a 8081-es porton");
 });

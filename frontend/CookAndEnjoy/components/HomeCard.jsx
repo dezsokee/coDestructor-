@@ -10,7 +10,7 @@ const HomeCard = (props) => {
     return (
         <View style={[styles.container, { width: width * 0.8 }]}>
             <Text style={styles.text}>
-                
+                {props.title}
             </Text>
             <Text style={styles.questText}>
                 Q1: {quest1.name}
@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
     questText: {
         fontSize: 16,
         marginBottom: 8,
-        marginLeft: 8
+        marginLeft: 8,
+        textDecorationLine: 'underline',
     }
 });
 

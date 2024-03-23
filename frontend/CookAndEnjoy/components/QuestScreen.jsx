@@ -42,6 +42,9 @@ const QuestScreen = () => {
         navigation.navigate('BigQuest2');
     };
 
+    const [isComplete1, setIsComplete1] = useState(false);
+    const [isComplete2, setIsComplete2] = useState(false);
+
     return (
         <>
             <ScrollView>
@@ -56,14 +59,14 @@ const QuestScreen = () => {
 
                     <View style={styles.card}>
                         <TouchableOpacity onPress={quest1Handle}>
-                            <QuestCard quest={quest1}>
+                            <QuestCard quest={quest1} isComplete = {isComplete1}>
 
                             </QuestCard>
                         </TouchableOpacity>
                     </View>
 
                     <View style={styles.card}>
-                        <TouchableOpacity onPress={quest2Handle}>
+                        <TouchableOpacity onPress={quest2Handle} isComplete = {isComplete2}>
                             <QuestCard quest={quest2}>
                             </QuestCard>
                         </TouchableOpacity>

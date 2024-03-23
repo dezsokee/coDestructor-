@@ -6,6 +6,8 @@ import QuestScreen from './components/QuestScreen';
 import Quest1 from './components/Quest1';
 import Quest2 from './components/Quest2';
 import User from './components/User';
+import DiscountScreen from './components/DiscountScreen';
+import DiscountPage from './components/DiscountPage';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +34,14 @@ const App = () => {
         <Stack.Screen
           name="User"
           component={User}
+        />
+        <Stack.Screen
+          name="Discount"
+          component={DiscountScreen}
+        />
+        <Stack.Screen
+          name="DiscountPage"
+          component={DiscountPage}
         />
       </Stack.Navigator>
     </NavigationContainer>
