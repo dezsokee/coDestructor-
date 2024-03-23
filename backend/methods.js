@@ -7,6 +7,7 @@ const client = new Client({
   user: "postgres",
   port: 5432,
   database: "EF",
+  password: "200342",
 });
 
 const app = express();
@@ -44,9 +45,6 @@ app.get("/recipe", async (req, res) => {
       recipe2 = recipes_array[Math.floor(Math.random() * recipes_array.length)];
     }
 
-    // console.log(recipe1);
-    // console.log(recipe2);
-
     res.json({ recipe1, recipe2 });
   } catch (error) {
     console.error("Hiba a lekérdezés során:", error);
@@ -71,6 +69,6 @@ app.get("recipeByIngredients/:ingredientsArray", async (req, res) => {
   console.log(ingredients);
 });
 
-app.listen(8081, () => {
+app.listen(3000, () => {
   console.log("A szerver fut a 8081-es porton");
 });
