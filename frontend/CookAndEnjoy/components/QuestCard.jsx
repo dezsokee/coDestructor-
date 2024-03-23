@@ -1,24 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet, useWindowDimensions, Platform } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions, Platform, ScrollView } from 'react-native';
 
 const QuestCard = (props) => {
 
     const { quest } = props;
 
     const { width } = useWindowDimensions();
-    
+
     return (
-        <View style={[styles.container, {width: width * 0.8}]}>
-            <Text style={styles.cardtitle}>{quest.title}</Text>
+            <View style={[styles.container, {width: width * 0.8}]}>
+            <Text style={styles.cardtitle}>{quest.name}</Text>
             <Text style={styles.carddescripton}> {quest.description} </Text>
-            {
-                quest.ingredients.map((ingredient) => {
-                    return (
-                        <Text style={styles.carddescripton}> {ingredient} </Text>
-                    );})
-            }
+            <Text>
+                {quest.ingredients}
+            </Text>
 
         </View>
+
     );
 };
 
