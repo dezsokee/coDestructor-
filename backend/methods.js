@@ -8,6 +8,7 @@ const client = new Client({
   user: "postgres",
   port: 5432,
   database: "EF",
+  password: "200342",
 });
 
 const app = express();
@@ -104,9 +105,11 @@ app.post("/createIngredients", (req, res) => {
 
   const data_ingredients = [
     ...new Set(
-      Object.values(data[0]).filter((ingredient) => ingredient !== "")
+      Object.values(data).filter((ingredient) => ingredient !== "")
     ),
   ];
+
+  console.log(data_ingredients);
 
   data_ingredients.forEach((element) => {
     client.query(
@@ -122,6 +125,15 @@ app.get("/userIngredients", async (req, res) => {
   res.json(ingredients.rows);
 });
 
-app.listen(8081, () => {
+app.get("/flag", async (req, res) => {
+  const flag = await client.query("SELECT * FROM nations;");
+
+  const p_flag = flag.rows;
+
+  //console.log(<img src="${p_flag[0].flag}" />);
+  res.json(flag.rows);
+});
+
+app.listen(3000, () => {
   console.log("A szerver fut a 8081-es porton");
 });

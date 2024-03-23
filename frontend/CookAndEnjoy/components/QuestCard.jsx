@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, useWindowDimensions, Platform, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions, Platform, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useState } from 'react';
 
 const QuestCard = (props) => {
 
     const { quest } = props;
 
     const { width } = useWindowDimensions();
+
+    const [isComplete, setIsComplete] = useState(props.isComplete);
 
     let ingredientsArray = "";
 
@@ -17,6 +20,10 @@ const QuestCard = (props) => {
     }
 
     ingredientsArray.shift();
+
+    const handleQuestCompletion = async () => {
+        setIsComplete(true);
+    }
 
     return (
         <View style={[styles.container, { width: width * 0.8 }]}>
@@ -34,6 +41,16 @@ const QuestCard = (props) => {
 
                 })}
             </Text>
+            
+            {isComplete ? (
+                <TouchableOpacity style={[styles.completeButton, styles.disabledButton]} disabled>
+                    <Text style={styles.buttonText}>Quest Completed</Text>
+                </TouchableOpacity>
+            ) : (
+                <TouchableOpacity style={styles.completeButton} onPress={handleQuestCompletion}>
+                    <Text style={styles.buttonText}>Complete Quest</Text>
+                </TouchableOpacity>
+            )}
 
         </View>
 
@@ -69,14 +86,26 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
         textAlign: 'left',
-        marginTop: 5
+        marginTop: 10,
+        marginBottom: 10,
+        fontWeight: 'bold',
     },
     hozzavaloszoveg: {
         fontSize: 16,
         fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
         textAlign: 'left',
         marginTop: 5
-    }
+    },
+    completeButton: {
+        backgroundColor: '#7FB069',
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 10,
+        alignItems: 'center',
+    },
+    disabledButton: {
+        backgroundColor: '#d3d3d3', // Light grey color for disabled state
+    },
 });
 
 export default QuestCard;

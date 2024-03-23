@@ -4,6 +4,7 @@ import Footer from './Footer';
 import { useState } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Picker } from '@react-native-picker/picker';
+import { axios } from 'axios';
 
 const User = () => {
 
@@ -64,6 +65,15 @@ const User = () => {
     }, []);
 
     const sendDataToServer = async () => {
+
+        console.log(JSON.stringify({
+            "selectedIngredientPass1": selectedValue1,
+            "selectedIngredientPass2": selectedValue2,
+            "selectedIngredientPass3": selectedValue3,
+            "selectedIngredientPass4": selectedValue4,
+            "selectedIngredientPass5": selectedValue5
+        }));
+
         try {
             const response = await fetch('http://192.168.117.213:3000/createIngredients', {
                 method: 'POST',
@@ -86,8 +96,6 @@ const User = () => {
             console.error('Error:', error);
         }
     };
-
-    console.log(ingredients);
 
     return (
         <>
@@ -183,7 +191,7 @@ const User = () => {
 
                 </View>
 
-                <TouchableOpacity style={[styles.button, { width: width * 0.6 }]} onPress={sendDataToServer}>
+                <TouchableOpacity style={[styles.button, { width: width * 0.6 }]} onPress={sendDataToServer} >
                     <Text style={styles.buttontext}>Submit</Text>
                 </TouchableOpacity>
 
