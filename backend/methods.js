@@ -66,6 +66,7 @@ app.get("/ingredients", async (req, res) => {
   } catch (error) {}
 });
 
+
 app.get("/recipeByIngredients/:ingredient", async (req, res) => {
   const { ingredient } = req.params;
 
