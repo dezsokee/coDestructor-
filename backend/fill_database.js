@@ -6,8 +6,6 @@ const client = new Client({
   user: "postgres",
   port: 5432,
   password: "geriike",
-
-  password: "200342",
   database: "EF",
 });
 
@@ -52,12 +50,16 @@ fs.readFile("new_recipes.json", "utf8", (err, data) => {
           const country = recipe.country;
 
           // Beszúrás a PostgreSQL adatbázisba
-          const insertPromise = client.query('INSERT INTO recipes (name, description, ingredients, method, country) VALUES ($1, $2, $3, $4, $5)', [name, description, ingredients, method, country])
+          const insertPromise = client
+            .query(
+              "INSERT INTO recipes (name, description, ingredients, method, country) VALUES ($1, $2, $3, $4, $5)",
+              [name, description, ingredients, method, country]
+            )
             .then(() => {
-              console.log('Recept sikeresen beszúrva');
+              console.log("Recept sikeresen beszúrva");
             })
-            .catch(error => {
-              console.error('Hiba a recept beszúrása során:', error);
+            .catch((error) => {
+              console.error("Hiba a recept beszúrása során:", error);
             });
 
           insertPromises.push(insertPromise);
