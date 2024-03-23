@@ -10,6 +10,7 @@ const client = new Client({
 =======
 >>>>>>> a18683ad09ae389734e0499e72416d79dac1849d
   port: 5432,
+  password: "2002boti",
   database: "EF",
 });
 
@@ -69,6 +70,7 @@ app.get("/ingredients", async (req, res) => {
   } catch (error) {}
 });
 
+<<<<<<< HEAD
 app.get("/recipeByIngredients/:ingredients{[]}", async (req, res) => {
   //const p_array = ["milk", "egg", "flour", "beef", "chicken"];
 
@@ -96,6 +98,58 @@ app.get("/recipeByIngredients/:ingredients{[]}", async (req, res) => {
   res.json(recipesQuery.rows);
 
   
+=======
+app.get("/recipeByIngredients/:ingredient", async (req, res) => {
+  const { ingredient } = req.params;
+
+  // try {
+  //   const recipes = await client.query(
+  //     `SELECT name, ingredients FROM "recipes" WHERE ingredients LIKE '%${ingredient}%';`
+  //   );
+  //   console.log(recipes.rows);
+
+  //   res.json(recipes.rows);
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+  try {
+    const nationQuery = await client.query(`SELECT nation FROM "nation";`);
+    const p_nation = nationQuery.rows;
+
+    let randomNation = p_nation[Math.floor(Math.random() * p_nation.length)];
+
+    const recipesQuery = await client.query(
+      `SELECT * FROM "recipes" WHERE "country" = '${randomNation.nation}' AND ingredients LIKE '%${ingredient}%';`
+    );
+    const recipes_array = recipesQuery.rows;
+
+    const recipe1 =
+      recipes_array[Math.floor(Math.random() * recipes_array.length)];
+    let recipe2 =
+      recipes_array[Math.floor(Math.random() * recipes_array.length)];
+    while (recipe1 === recipe2) {
+      recipe2 = recipes_array[Math.floor(Math.random() * recipes_array.length)];
+    }
+
+    // console.log(recipe1);
+    // console.log(recipe2);
+
+    res.json({ recipe1, recipe2 });
+  } catch (error) {
+    console.error("Hiba a lekérdezés során:", error);
+    res.status(500).json({ error: error.message });
+  }
+
+});
+
+app.post('/createIngredients', (req, res) => {
+  const { data } = req.body;
+  console.log('Received data from React Native:', data);
+  // Process the data as needed
+  console.log(data);
+  res.sendStatus(200);
+>>>>>>> 4fe864a794c998854f5581c9bf1025652dc08a01
 });
 
 app.listen(8081, () => {
