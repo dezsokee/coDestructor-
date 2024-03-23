@@ -30,8 +30,10 @@ app.get("/recipe", async (req, res) => {
     const nationQuery = await client.query(`SELECT nation FROM "nation";`);
     const p_nation = nationQuery.rows;
 
-    let randomNation = p_nation[Math.floor(Math.random() % p_nation.length)];
-    let nationS = randomNation.nation;
+    
+    let randomNation = p_nation[Math.floor(Math.random() * p_nation.length)];
+
+    console.log(p_nation);
 
     const recipesQuery = await client.query(
       `SELECT * FROM "recipes" WHERE "country" = '${randomNation.nation}';`
