@@ -29,8 +29,6 @@ const HomeScreen = () => {
         fetchData();
       }, []);
 
-    console.log(monthlyQuests);
-    const topic = monthlyQuests.country;
     const navigation = useNavigation();
 
     const quest1Handle = () => {
@@ -40,10 +38,6 @@ const HomeScreen = () => {
     const quest2Handle = () => {
         navigation.navigate('BigQuest2');
     };
-
-    const nation = monthlyQuests.country;
-
-    const myString = "require('../assets/{nation}.png')";
 
     return (
         <>
@@ -57,7 +51,7 @@ const HomeScreen = () => {
                     <Text style={styles.text}>This Month's Topic:</Text>
                     <View style={styles.rowflex}>
                         <Image source={require('../assets/italy.png')} style={{ width: 40, height: 40 }} />
-                        <Text style={styles.topictext}>{topic}</Text>
+                        <Text style={styles.topictext}>{monthlyQuests.country}</Text>
                     </View>
 
                 </View>
