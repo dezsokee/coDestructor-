@@ -7,8 +7,8 @@ const client = new Client({
   host: "localhost",
   user: "postgres",
   port: 5432,
-  password: "2002boti",
-  database: "EF",
+  password: "geriike",
+  database: "EF"
 });
 
 const app = express();
@@ -28,6 +28,7 @@ client
 
 app.get("/recipeByIngredients", async (req, res) => {
   try {
+
     const fetch = await import("node-fetch");
 
     // Meghívjuk a /userIngredients végpontot, hogy lekérdezzük a felhasználó által megadott összetevőket

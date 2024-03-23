@@ -53,7 +53,6 @@ const HomeScreen = () => {
                         <Image source={require('../assets/italy.png')} style={{ width: 40, height: 40 }} />
                         <Text style={styles.topictext}>{monthlyQuests.country}</Text>
                     </View>
-
                 </View>
 
                 <View>
@@ -63,11 +62,9 @@ const HomeScreen = () => {
                         </HomeCard>
                     </TouchableOpacity>
 
-                    {/* <TouchableOpacity onPress={quest2Handle}>
-                        <HomeCard quests={monthlyQuests2} title="Last Week's Quests:">
-
-                        </HomeCard>
-                    </TouchableOpacity> */}
+                    <TouchableOpacity>
+                        
+                    </TouchableOpacity>
 
                 </View>
 
