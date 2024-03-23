@@ -28,7 +28,7 @@ client
 
 app.get("/recipe", async (req, res) => {
   try {
-    const nationQuery = await client.query(`SELECT nation FROM "nations";`);
+    const nationQuery = await client.query(`SELECT nation FROM "nation";`);
     const p_nation = nationQuery.rows;
 
     let randomNation = p_nation[Math.floor(Math.random() * p_nation.length)];
@@ -61,9 +61,8 @@ app.get("/ingredients", async (req, res) => {
     // console.log(ingredients.rows);
 
     res.json(ingredients.rows);
-  } catch (error) { }
+  } catch (error) {}
 });
-
 
 app.get("/recipeByIngredients/:ingredient", async (req, res) => {
   const { ingredient } = req.params;
@@ -94,18 +93,36 @@ app.get("/recipeByIngredients/:ingredient", async (req, res) => {
   }
 });
 
-app.use(express.json())
+app.use(express.json());
 app.use(bodyParser.json());
 
-app.post('/createIngredients', (req, res) => {
-  const  data  = req.body;
+app.post("/createIngredients", (req, res) => {
+  const data = req.body;
 
-  console.log(req.body);
-  
-  console.log('Received data from React Native:', data);
+  res.status(200).json({ message: "Data received successfully" });
 
+  client.query(`DELETE FROM user_ingredient;`);
+
+  const data_ingredients = [
+    ...new Set(
+      Object.values(data[0]).filter((ingredient) => ingredient !== "")
+    ),
+  ];
+
+  data_ingredients.forEach((element) => {
+    client.query(
+      `INSERT INTO user_ingredient (ingredient) VALUES ('${element}');`
+    );
+  });
+
+  console.log(data_ingredients);
 });
 
-app.listen(3000, () => {
+app.get("/userIngredients", async (req, res) => {
+  const ingredients = await client.query(`SELECT ingredient FROM user_ingredient;`);
+  res.json(ingredients.rows);
+});
+
+app.listen(8081, () => {
   console.log("A szerver fut a 8081-es porton");
 });

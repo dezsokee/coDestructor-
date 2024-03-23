@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TextInput, useWindowDimensions } from 'react-na
 import Footer from './Footer';
 import { useState } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import IngredientInput from './IngredientInput';
 import { Picker } from '@react-native-picker/picker';
 
 const User = () => {
@@ -20,9 +19,9 @@ const User = () => {
     const [selectedValue5, setSelectedValue5] = useState("");
 
     ingredients.unshift(
-        {
+    {
             ingredient_name: "Select one!"
-        }
+    }
 
     );
 
@@ -64,8 +63,6 @@ const User = () => {
         fetchData();
     }, []);
 
-    const [responseData, setResponseData] = useState('');
-
     const sendDataToServer = async () => {
         try {
             const response = await fetch('http://192.168.117.213:3000/createIngredients', {
@@ -89,6 +86,8 @@ const User = () => {
             console.error('Error:', error);
         }
     };
+
+    console.log(ingredients);
 
     return (
         <>
@@ -136,6 +135,7 @@ const User = () => {
                                     return <Picker.Item key={index} label={ingredient.ingredient_name} value={ingredient.ingredient_name} />
                                 })}
                             </Picker>
+                            
                         </View>
 
                         <View style={styles.picker}>
