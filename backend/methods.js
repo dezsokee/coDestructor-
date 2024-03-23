@@ -7,10 +7,15 @@ const client = new Client({
   user: "postgres",
   port: 5432,
 <<<<<<< HEAD
+<<<<<<< HEAD
   password: "geriike",
 =======
   password: "200342",
 >>>>>>> 71ba4994d3d798514224f71320395d6af75fb2f7
+=======
+  password: "geriike",
+  password: "200342",
+>>>>>>> e9f7e40904a7ce3dbf42b1a2faa28cf6a74f6c0d
   database: "EF",
 });
 
