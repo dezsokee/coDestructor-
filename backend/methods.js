@@ -7,9 +7,8 @@ const client = new Client({
   host: "localhost",
   user: "postgres",
   port: 5432,
-  password: "2002boti",
-  database: "EF",
-  password: "200342",
+  password: "geriike",
+  database: "EF"
 });
 
 const app = express();
