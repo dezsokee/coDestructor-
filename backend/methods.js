@@ -29,7 +29,7 @@ client
 
 app.get("/recipe", async (req, res) => {
   try {
-    const nationQuery = await client.query(`SELECT nation FROM "nation";`);
+    const nationQuery = await client.query(`SELECT nation FROM "nations";`);
     const p_nation = nationQuery.rows;
 
     let randomNation = p_nation[Math.floor(Math.random() * p_nation.length)];
@@ -68,17 +68,6 @@ app.get("/ingredients", async (req, res) => {
 app.get("/recipeByIngredients/:ingredient", async (req, res) => {
   const { ingredient } = req.params;
 
-  // try {
-  //   const recipes = await client.query(
-  //     `SELECT name, ingredients FROM "recipes" WHERE ingredients LIKE '%${ingredient}%';`
-  //   );
-  //   console.log(recipes.rows);
-
-  //   res.json(recipes.rows);
-  // } catch (error) {
-  //   console.log(error);
-  // }
-
   try {
     const nationQuery = await client.query(`SELECT nation FROM "nation";`);
     const p_nation = nationQuery.rows;
@@ -98,15 +87,11 @@ app.get("/recipeByIngredients/:ingredient", async (req, res) => {
       recipe2 = recipes_array[Math.floor(Math.random() * recipes_array.length)];
     }
 
-    // console.log(recipe1);
-    // console.log(recipe2);
-
     res.json({ recipe1, recipe2 });
   } catch (error) {
     console.error("Hiba a lekérdezés során:", error);
     res.status(500).json({ error: error.message });
   }
-
 });
 
 app.use(express.json())
@@ -118,7 +103,7 @@ app.post('/createIngredients', (req, res) => {
   console.log(req.body);
   
   console.log('Received data from React Native:', data);
-  // Process the data as needed
+
 });
 
 app.listen(3000, () => {
