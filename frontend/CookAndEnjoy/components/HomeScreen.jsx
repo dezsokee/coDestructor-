@@ -1,26 +1,34 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, Image, LogBox } from 'react-native';
 import HomeCard from './HomeCard';
 import { useState } from 'react';
 import Footer from './Footer';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { useFocusEffect } from '@react-navigation/native';
+import { YellowBox } from 'react-native';
 
 const HomeScreen = () => {
 
     const [monthlyQuests, setMonthlyQuests] = useState([]);
     const [monthlyQuests2, setMonthlyQuests2] = useState([]);
     const [userIngredients, setUserIngredients] = useState([]);
+    const [point, setPoints] = useState(0);
+    const [flag, setFlag] = useState([]);
+
+    console.disableYellowBox = false;
+    
+    console.disableYellowBox = false;
+    YellowBox.ignoreWarnings(['']);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://192.168.117.213:3000/recipe');
+                const response = await fetch('http://192.168.117.213:3000/recipeByIngredients');
 
-                const json = await response.json();
+                let json = await response.json();
 
-                setMonthlyQuests(json.recipe1);
-                setMonthlyQuests2(json.recipe2);
+                setMonthlyQuests(json[1]);
+                setMonthlyQuests2(json[0]);
 
             } catch (error) {
                 console.error('Error:', error);
@@ -30,7 +38,7 @@ const HomeScreen = () => {
         fetchData();
     }, []);
 
-    useEffect(() => {
+    useFocusEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch('http://192.168.117.213:3000/userIngredients');
@@ -45,7 +53,57 @@ const HomeScreen = () => {
         };
 
         fetchData();
+    });
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await fetch('http://192.168.117.213:3000/getPoints');
+
+    //             const json = await response.json();
+
+    //             setPoints(json[0].points);
+
+    //         } catch (error) {
+    //             console.error('Error:', error);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
+
+    useFocusEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://192.168.117.213:3000/getPoints');
+
+                const json = await response.json();
+
+                setPoints(json[0].points);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchData();
+    });
+
+    useEffect(() => {
+        const fetchFlag = async () => {
+            try {
+                const response = await fetch('http://192.168.117.213:3000/flag');
+
+                let json = await response.json();
+
+                setFlag(json);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchFlag();
     }, []);
+
 
     const navigation = useNavigation();
 
@@ -57,17 +115,22 @@ const HomeScreen = () => {
         navigation.navigate('User');
     };
 
+    let actualFlag;
+
+    flag.map((item) => {
+        if(item.nation === monthlyQuests.country) {
+            actualFlag=item.flag
+        }
+    });
+
     return (
         <>
             <View style={styles.container}>
-
                 <View style={styles.dear}>
                     <Text style={styles.title}>
-                        Welcome User!
+                        Welcome User!                     <Text style={styles.pointtext}> {point} </Text>
                     </Text>
-
                 </View>
-                
 
                 <View style={styles.titleview}>
                     <Text style={styles.title}>Cook 'n Enjoy!</Text>
@@ -76,7 +139,7 @@ const HomeScreen = () => {
                 <View style={styles.topic}>
                     <Text style={styles.text}>This Month's Topic:</Text>
                     <View style={styles.rowflex}>
-                        <Image source={require('../assets/italy.png')} style={{ width: 40, height: 40 }} />
+                        <Image source={{ uri: actualFlag }} style={{ width: 40, height: 40 }} />
                         <Text style={styles.topictext}>{monthlyQuests.country}</Text>
                     </View>
                 </View>
@@ -124,11 +187,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 20,
         fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
         textAlign: 'center',
         marginTop: 10,
         backgroundColor: 'white',
+        marginRight: 10,
     },
     topic: {
         marginBottom: -46,
@@ -199,12 +262,33 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingLeft: 10,
         flexDirection: 'row',
-        alignContent: 'center',
-        justifyContent: 'center',
+        justifyContent: 'left',
     },
     titleview: {
         flex: 1,
         marginTop: -20,
+    },
+    titleflex: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 10,
+    },
+    pointtext: {
+        fontSize: 20,
+        color: 'white',
+        fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
+        backgroundColor: '#006400',
+    },
+    pointview: {
+        flex: 1,
+        borderRadius: 40,
+        padding: 5,
+        marginLeft: 10,
+        backgroundColor: '#006400',
+        marginLeft: 280,
+        verticalAlign: 'center',
     },
 });
 

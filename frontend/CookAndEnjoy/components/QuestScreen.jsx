@@ -4,24 +4,40 @@ import Footer from './Footer';
 import QuestCard from './QuestCard';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { YellowBox } from 'react-native';
 
 const QuestScreen = () => {
 
     const [quest1, setQuest1] = useState({});
     const [quest2, setQuest2] = useState({});
 
+    const [data1, setData1] = useState("");
+    const [data2, setData2] = useState("");
+
     const navigation = useNavigation();
+
+    YellowBox.ignoreWarnings(['']);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://192.168.117.213:3000/recipe');
+                const response = await fetch('http://192.168.117.213:3000/recipeByIngredients');
 
                 const json = await response.json();
 
-                setQuest1(json.recipe1);
-                setQuest2(json.recipe2);
+                setQuest1(json[0]);
+                setQuest2(json[1]);
+
+                fetch('https://foodish-api.com/api').
+                    then(response => response.json()).
+                    then(data => setData1(data.image)).
+                    catch(error => console.error(error));
+
+                fetch('https://foodish-api.com/api').
+                    then(response => response.json()).
+                    then(data => setData2(data.image)).
+                    catch(error => console.error(error));
+
 
             } catch (error) {
                 console.error('Error:', error);
@@ -29,17 +45,21 @@ const QuestScreen = () => {
         };
 
         fetchData();
+
     }, []);
+
+
+
 
     console.log(quest1);
     console.log(quest2);
 
     const quest1Handle = () => {
-        navigation.navigate('BigQuest');
+        navigation.navigate('BigQuest', { questData: quest1 });
     };
 
     const quest2Handle = () => {
-        navigation.navigate('BigQuest2');
+        navigation.navigate('BigQuest2', { questData: quest2 });
     };
 
     const [isComplete1, setIsComplete1] = useState(false);
@@ -59,15 +79,15 @@ const QuestScreen = () => {
 
                     <View style={styles.card}>
                         <TouchableOpacity onPress={quest1Handle}>
-                            <QuestCard quest={quest1} isComplete = {isComplete1}>
+                            <QuestCard quest={quest1} isComplete={isComplete1} uri={data1}>
 
                             </QuestCard>
                         </TouchableOpacity>
                     </View>
 
                     <View style={styles.card}>
-                        <TouchableOpacity onPress={quest2Handle} isComplete = {isComplete2}>
-                            <QuestCard quest={quest2}>
+                        <TouchableOpacity onPress={quest2Handle} isComplete={isComplete2}>
+                            <QuestCard quest={quest2} uri={data2}>
                             </QuestCard>
                         </TouchableOpacity>
                     </View>

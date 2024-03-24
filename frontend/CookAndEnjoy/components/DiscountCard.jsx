@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Footer from './Footer';
 
-const DiscountCard = ({ title, description, discount, onPress }) => {
+const DiscountCard = ({ title, description, discount, onPress, points }) => {
     return (
         <>
             <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -11,6 +11,7 @@ const DiscountCard = ({ title, description, discount, onPress }) => {
                         <Text style={styles.title}>{title}</Text>
                         <Text style={styles.discount}>{discount}% OFF</Text>
                     </View>
+                    <Text style={styles.description}>{points} points</Text>
                     <Text style={styles.description}>{description}</Text>
                 </View>
             </TouchableOpacity>

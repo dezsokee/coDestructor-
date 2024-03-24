@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, useWindowDimensions, Platform, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, useWindowDimensions, Platform, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useState } from 'react';
 
@@ -10,6 +10,7 @@ const QuestCard = (props) => {
     const { width } = useWindowDimensions();
 
     const [isComplete, setIsComplete] = useState(props.isComplete);
+    const [data, setData] = useState("");
 
     let ingredientsArray = "";
 
@@ -21,8 +22,32 @@ const QuestCard = (props) => {
 
     ingredientsArray.shift();
 
+    console.log(data);
+
+    const sendDataToServer = async () => {
+        try {
+            const response = await fetch('http://192.168.117.213:3000/increasePoints', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "points": 150
+                }),
+            });
+
+            const responseJson = await response.json();
+            console.log(responseJson);
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     const handleQuestCompletion = async () => {
         setIsComplete(true);
+        sendDataToServer();
+        alert("Quest completed!");
     }
 
     return (
@@ -41,7 +66,20 @@ const QuestCard = (props) => {
 
                 })}
             </Text>
+
+                <View style = {styles.imageview}>
+                    <Image
+                        style={{ width: 200, height: 200 }}
+                        source={{ uri: props.uri }}
+                    />
+                </View>
             
+            <View style = {styles.pointview}>
+                <Text style = {styles.pointtext}>
+                    150 points
+                </Text>
+            </View>
+
             {isComplete ? (
                 <TouchableOpacity style={[styles.completeButton, styles.disabledButton]} disabled>
                     <Text style={styles.buttonText}>Quest Completed</Text>
@@ -105,6 +143,21 @@ const styles = StyleSheet.create({
     },
     disabledButton: {
         backgroundColor: '#d3d3d3', // Light grey color for disabled state
+    },
+    pointview: {
+        marginTop: 10,
+        padding: 10,
+        alignItems: 'center',
+    },
+    pointtext: {
+        fontSize: 20,
+        fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
+        textAlign: 'center',
+        color: 'black',
+    },
+    imageview: {
+        marginTop: 10,
+        alignItems: 'center'
     },
 });
 
