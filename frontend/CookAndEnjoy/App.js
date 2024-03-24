@@ -12,6 +12,8 @@ import DiscountPage from './components/DiscountPage';
 const Stack = createStackNavigator();
 
 const App = () => {
+  
+
   return (
     <NavigationContainer>
       <Stack.Navigator>

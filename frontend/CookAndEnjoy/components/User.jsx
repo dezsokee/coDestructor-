@@ -4,7 +4,6 @@ import Footer from './Footer';
 import { useState } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Picker } from '@react-native-picker/picker';
-import { axios } from 'axios';
 
 const User = () => {
 
@@ -19,36 +18,37 @@ const User = () => {
     const [selectedValue4, setSelectedValue4] = useState("");
     const [selectedValue5, setSelectedValue5] = useState("");
 
-    ingredients.unshift(
-    {
-            ingredient_name: "Select one!"
-    }
-
-    );
+    ingredients.unshift({ ingredient_name: "Select one!" });
 
     const handleValueChange1 = (itemValue) => {
         setSelectedValue1(itemValue);
+        ingredients.shift();
     };
 
     const handleValueChange2 = (itemValue) => {
         setSelectedValue2(itemValue);
+        ingredients.shift();
     };
 
     const handleValueChange3 = (itemValue) => {
         setSelectedValue3(itemValue);
+        ingredients.shift();
     };
 
     const handleValueChange4 = (itemValue) => {
         setSelectedValue4(itemValue);
+        ingredients.shift();
     };
 
     const handleValueChange5 = (itemValue) => {
         setSelectedValue5(itemValue);
+        ingredients.shift();
     };
 
     const { width } = useWindowDimensions();
 
     useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const response = await fetch('http://192.168.117.213:3000/ingredients');
@@ -65,14 +65,6 @@ const User = () => {
     }, []);
 
     const sendDataToServer = async () => {
-
-        console.log(JSON.stringify({
-            "selectedIngredientPass1": selectedValue1,
-            "selectedIngredientPass2": selectedValue2,
-            "selectedIngredientPass3": selectedValue3,
-            "selectedIngredientPass4": selectedValue4,
-            "selectedIngredientPass5": selectedValue5
-        }));
 
         try {
             const response = await fetch('http://192.168.117.213:3000/createIngredients', {
@@ -143,7 +135,7 @@ const User = () => {
                                     return <Picker.Item key={index} label={ingredient.ingredient_name} value={ingredient.ingredient_name} />
                                 })}
                             </Picker>
-                            
+
                         </View>
 
                         <View style={styles.picker}>
